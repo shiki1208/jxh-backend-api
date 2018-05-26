@@ -2,6 +2,10 @@ import {
   SystemConfig
 } from '../config'
 
+import crypto from 'crypto'
+
+const md5 = crypto.createHash('hex')
+
 // 截取字符串，多余的部分用...代替
 export let setString = (str, len) => {
   let StrLen = 0
@@ -60,4 +64,12 @@ export let getJsonLength = (jsonData) => {
     arr.push(jsonData[item])
   }
   return arr.length
+}
+
+// 生成MD5
+export let getMD5 = (str) => {
+  if (str) {
+    str += '' //
+    return md5.update(str).digest('hex')
+  }
 }
