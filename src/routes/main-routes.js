@@ -13,5 +13,6 @@ router
   .put('/api/:name', controllers.api.Put)
   .del('/api/:name', controllers.api.Delect)
   .post('/auth/:action', controllers.auth.Post)
+  .post('/user/login', controllers.user.login)
 
 module.exports = router
