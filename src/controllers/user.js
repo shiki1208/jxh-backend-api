@@ -13,3 +13,12 @@ export let login = async (ctx) => {
     para: ctx.query
   }
 }
+
+export let getUser = async (ctx) => {
+  let userList = await User.findAll()
+  ctx.body = {
+    result: userList,
+    name: ctx.params.name,
+    para: ctx.query
+  }
+}

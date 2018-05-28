@@ -1,6 +1,7 @@
 import Koa2 from 'koa'
 import KoaBody from 'koa-body'
 import KoaStatic from 'koa-static2'
+import cors from 'koa-cors' // 处理掉options请求
 import {
   System as SystemConfig
 } from './config'
@@ -24,14 +25,15 @@ app
     } else {
       ctx.set('Access-Control-Allow-Origin', SystemConfig.HTTP_server_host)
     }
-    ctx.set('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+    ctx.set('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization')
     ctx.set('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS')
     ctx.set('Access-Control-Allow-Credentials', true) // 允许带上 cookie
     return next()
   })
+  .use(cors())
   .use(ErrorRoutesCatch())
   .use(KoaStatic('assets', path.resolve(__dirname, '../assets'))) // Static resource
-  .use(jwt({ secret: publicKey }).unless({ path: [/^\/public|\/user\/login|\/assets/] }))
+  .use(jwt({secret: publicKey}).unless({path: [/^\/public|\/user\/login|\/assets/]}))
   .use(KoaBody({
     multipart: true,
     strict: false,
