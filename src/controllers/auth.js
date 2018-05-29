@@ -61,12 +61,34 @@ export let login = async (ctx) => {
     password: password
   })
   let userInfo = res.dataValues
+  // 生成token
   let token = null
   if (userInfo) {
     token = jwt.sign({
       userInfo: userInfo // 你要保存到token的数据
     }, publicKey, {expiresIn: '7d'})
   }
+  // 存cookie
+  ctx.cookies.set('Bearer', token, {
+    domain: 'localhost',
+    path: '/',
+    maxAge: 2 * 60 * 60 * 1000,
+    httpOnly: false
+  })
+  // let cokie = ctx.cookies.get('Bearer')
+  // console.log(`cookie is ${cokie}`)
+  // ctx.cookies.set('Bearer', token,
+  //   {
+  //     signed: true,
+  //     domain: 'localhost', // 写cookie所在的域名
+  //     path: '/', // 写cookie所在的路径
+  //     maxAge: 2 * 60 * 60 * 1000, // cookie有效时长
+  //     expires: 7, // cookie失效时间
+  //     httpOnly: false, // 是否只用于http请求中获取
+  //     overwrite: true, // 是否允许重写
+  //     secure: false // 为true 则开启只允许https访问
+  //   }
+  // )
   let result = {
     userInfo: userInfo,
     token: token

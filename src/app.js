@@ -21,7 +21,8 @@ const publicKey = fs.readFileSync(path.join(__dirname, '../publicKey.pub'))
 app
   .use((ctx, next) => {
     if (ctx.request.header.host.split(':')[0] === 'localhost' || ctx.request.header.host.split(':')[0] === '127.0.0.1') {
-      ctx.set('Access-Control-Allow-Origin', '*')
+      // ctx.set('Access-Control-Allow-Origin', '*')
+      ctx.set('Access-Control-Allow-Origin', 'http://localhost:3000')
     } else {
       ctx.set('Access-Control-Allow-Origin', SystemConfig.HTTP_server_host)
     }
@@ -58,7 +59,7 @@ if (env === 'development') { // logger
     })
   })
 }
-
+app.key = publicKey
 app.listen(SystemConfig.API_server_port)
 
 console.log('Now start API server on port ' + SystemConfig.API_server_port + '...')
